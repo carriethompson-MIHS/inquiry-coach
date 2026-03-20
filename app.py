@@ -7,13 +7,13 @@ st.set_page_config(page_title="Senior Inquiry Coach", layout="centered")
 
 st.title("🎓 Senior Inquiry Feedback Coach")
 
-# --- 2. THE SIDEBAR KEY (Bypasses the 429 Error) ---
+# --- 2. THE SIDEBAR (API KEY) ---
 st.sidebar.header("Settings")
-# We use a text input so you can paste the personal key directly
 api_key = st.sidebar.text_input("Paste Personal API Key here:", type="password")
-st.sidebar.info("Get a key at aistudio.google.com")
+st.sidebar.info("Get your key at aistudio.google.com")
 
-# --- 3. THE INPUTS ---
+# --- 3. THE INPUTS (Restored Toggle) ---
+mode = st.radio("What are you working on?", ["Building the Outline", "Writing the Full Paper"])
 draft = st.text_area("Paste student work here:", height=300)
 
 # --- 4. THE BRAIN ---
@@ -23,23 +23,32 @@ if st.button("Analyze My Work"):
     elif not draft:
         st.warning("Please paste some text to analyze.")
     else:
-        # March 2026: Gemini 1.5 Flash is the most stable free model
-        model_id = "gemini-1.5-flash"
+        # 🚀 2026 UPDATE: Switching to the active 2.5-flash model
+        model_id = "gemini-2.5-flash"
         url = f"https://generativelanguage.googleapis.com/v1/models/{model_id}:generateContent?key={api_key}"
         
         headers = {'Content-Type': 'application/json'}
-        prompt = f"Act as a teacher. Check this work for: 15 sources, no 'I/me/my' language, and MLA style. Work: {draft}"
+        
+        # Adjusting the prompt based on the toggle
+        if mode == "Building the Outline":
+            prompt_intro = "Check this OUTLINE for logical flow and source count (needs 15)."
+        else:
+            prompt_intro = "Check this PAPER for MLA style and first-person language (no 'I/me/my')."
+
+        prompt = f"Act as a teacher. {prompt_intro} Work: {draft}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-        with st.spinner("Analyzing..."):
+        with st.spinner("Connecting to 2026 Google Servers..."):
             try:
                 response = requests.post(url, headers=headers, data=json.dumps(data))
                 result = response.json()
                 
                 if response.status_code == 200:
                     feedback = result['candidates'][0]['content']['parts'][0]['text']
-                    st.success("Success!")
+                    st.success("Analysis Complete!")
                     st.markdown(feedback)
+                elif response.status_code == 404:
+                    st.error("Google says the model ID is wrong. Trying legacy alias...")
                 else:
                     st.error(f"Google says: {result['error']['message']}")
             except Exception as e:
