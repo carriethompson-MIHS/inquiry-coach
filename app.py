@@ -1,5 +1,6 @@
 import streamlit as st
-import google.generativeai as genai
+import requests
+import json
 
 # --- 1. PAGE SETUP ---
 st.set_page_config(page_title="Senior Inquiry Coach", layout="centered")
@@ -14,43 +15,44 @@ RUBRIC_DATA = """
 
 st.title("🎓 Senior Inquiry Feedback Coach")
 
-# --- 3. THE SECRET KEY LOGIC ---
+# --- 2. KEY LOGIC ---
 if "MY_API_KEY" in st.secrets:
     user_key = st.secrets["MY_API_KEY"]
 else:
     user_key = st.sidebar.text_input("Teacher API Key:", type="password")
 
-# --- 4. THE INPUTS ---
-mode = st.radio("Phase of Project:", ["Building the Outline", "Writing the Full Paper"])
+# --- 3. INPUTS ---
+mode = st.radio("Phase:", ["Building the Outline", "Writing the Full Paper"])
 draft = st.text_area("Paste your text here:", height=300)
 
-# --- 5. THE BRAIN ---
+# --- 4. THE BRAIN (DIRECT WEB REQUEST) ---
 if st.button("Analyze My Work"):
     if not user_key:
         st.error("API Key missing!")
     elif not draft:
         st.warning("Please paste some text.")
     else:
-        try:
-            # FIX: Adding the version to the configure call directly
-            genai.configure(api_key=user_key)
+        # This URL is the "Direct Line" that bypasses the v1beta error
+        url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={user_key}"
+        
+        headers = {'Content-Type': 'application/json'}
+        
+        prompt = f"Act as a teacher. Check this work against: {RUBRIC_DATA}. List 3 strengths and 3 gaps. Work: {draft}"
+        
+        data = {
+            "contents": [{"parts": [{"text": prompt}]}]
+        }
+
+        with st.spinner("Talking directly to Google..."):
+            response = requests.post(url, headers=headers, data=json.dumps(data))
             
-            # THE GPS COORDINATES FIX:
-            # We are using the exact path Google uses internally
-            model = genai.GenerativeModel(model_name='models/gemini-1.5-flash')
-            
-            prompt = f"Act as a teacher. Check this work against: {RUBRIC_DATA}. List 3 strengths and 3 gaps. Do not rewrite it."
-            
-            with st.spinner("Connecting to Google Servers..."):
-                # Explicitly calling the content generation
-                response = model.generate_content(prompt + "\n\nWork: " + draft)
-                
-                if response.text:
-                    st.success("Analysis Complete!")
-                    st.markdown(response.text)
-                else:
-                    st.error("The AI returned an empty response. Try again in 30 seconds.")
-                
-        except Exception as e:
-            st.error(f"Technical Error: {e}")
-            st.info("If this still says 404, it means the API Key itself is likely restricted to a specific project. See below.")
+            if response.status_code == 200:
+                result = response.json()
+                # Extracting the text from the complex Google response
+                feedback = result['candidates'][0]['content']['parts'][0]['text']
+                st.success("Analysis Complete!")
+                st.markdown(feedback)
+            elif response.status_code == 429:
+                st.error("Google is busy (Quota Limit). Wait 60 seconds and try again!")
+            else:
+                st.error(f"Error {response.status_code}: {response.text}")
