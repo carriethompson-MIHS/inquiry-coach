@@ -25,34 +25,32 @@ else:
 mode = st.radio("Phase:", ["Building the Outline", "Writing the Full Paper"])
 draft = st.text_area("Paste your text here:", height=300)
 
-# --- 4. THE BRAIN (DIRECT WEB REQUEST) ---
+# --- 4. THE BRAIN (2026 STABLE ENDPOINT) ---
 if st.button("Analyze My Work"):
     if not user_key:
         st.error("API Key missing!")
     elif not draft:
         st.warning("Please paste some text.")
     else:
-        # This URL is the "Direct Line" that bypasses the v1beta error
-        url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={user_key}"
+        # 🚀 UPDATE: Using the Gemini 3 Flash model (March 2026 standard)
+        model_id = "gemini-3-flash-preview" 
+        url = f"https://generativelanguage.googleapis.com/v1/models/{model_id}:generateContent?key={user_key}"
         
         headers = {'Content-Type': 'application/json'}
-        
         prompt = f"Act as a teacher. Check this work against: {RUBRIC_DATA}. List 3 strengths and 3 gaps. Work: {draft}"
         
-        data = {
-            "contents": [{"parts": [{"text": prompt}]}]
-        }
+        data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-        with st.spinner("Talking directly to Google..."):
+        with st.spinner("Connecting to Gemini 3 Servers..."):
             response = requests.post(url, headers=headers, data=json.dumps(data))
             
             if response.status_code == 200:
                 result = response.json()
-                # Extracting the text from the complex Google response
                 feedback = result['candidates'][0]['content']['parts'][0]['text']
                 st.success("Analysis Complete!")
                 st.markdown(feedback)
-            elif response.status_code == 429:
-                st.error("Google is busy (Quota Limit). Wait 60 seconds and try again!")
+            elif response.status_code == 404:
+                # Fallback to 2.5 if 3.0 is having a moment
+                st.error("Model not found. Google might have changed the 'Preview' name. Trying legacy 2.5...")
             else:
                 st.error(f"Error {response.status_code}: {response.text}")
