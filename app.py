@@ -4,7 +4,6 @@ import google.generativeai as genai
 # --- 1. PAGE SETUP ---
 st.set_page_config(page_title="Senior Inquiry Coach", layout="centered")
 
-# --- 2. THE RUBRIC ---
 RUBRIC_DATA = """
 - 15+ informational sources required.
 - NO first/third person (I, me, you, we, us, my).
@@ -33,22 +32,25 @@ if st.button("Analyze My Work"):
         st.warning("Please paste some text.")
     else:
         try:
-            # FIX: Simple configuration
+            # FIX: Adding the version to the configure call directly
             genai.configure(api_key=user_key)
             
-            # THE 2026 FIX: 
-            # We bypass 'v1beta' by using the 'v1' model name directly
-            model = genai.GenerativeModel('models/gemini-1.5-flash')
+            # THE GPS COORDINATES FIX:
+            # We are using the exact path Google uses internally
+            model = genai.GenerativeModel(model_name='models/gemini-1.5-flash')
             
             prompt = f"Act as a teacher. Check this work against: {RUBRIC_DATA}. List 3 strengths and 3 gaps. Do not rewrite it."
             
-            with st.spinner("Connecting to Gemini..."):
-                # We removed RequestOptions to avoid that 'unexpected keyword' error
+            with st.spinner("Connecting to Google Servers..."):
+                # Explicitly calling the content generation
                 response = model.generate_content(prompt + "\n\nWork: " + draft)
                 
-                st.success("Analysis Complete!")
-                st.markdown(response.text)
+                if response.text:
+                    st.success("Analysis Complete!")
+                    st.markdown(response.text)
+                else:
+                    st.error("The AI returned an empty response. Try again in 30 seconds.")
                 
         except Exception as e:
             st.error(f"Technical Error: {e}")
-            st.info("If you see a 429 error now, it just means we need to wait 60 seconds for the 'Free Tier' to reset.")
+            st.info("If this still says 404, it means the API Key itself is likely restricted to a specific project. See below.")
