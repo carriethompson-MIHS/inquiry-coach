@@ -38,7 +38,7 @@ if st.button("Analyze My Work"):
         try:
             genai.configure(api_key=user_key, transport='rest')
             # Using the 2026 stable model name
-            model = genai.GenerativeModel('gemini-1.5-pro-latest')
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             if mode == "Building the Outline":
                 phase_context = "The student is OUTLINING. Check for 15 source slots and logical flow."
