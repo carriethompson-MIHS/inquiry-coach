@@ -36,7 +36,7 @@ if st.button("Analyze My Work"):
         st.warning("Please paste some text first!")
     else:
         try:
-            genai.configure(api_key=user_key)
+            genai.configure(api_key=user_key, transport='rest')
             # Using the 2026 stable model name
             model = genai.GenerativeModel('gemini-1.5-pro-latest')
             
