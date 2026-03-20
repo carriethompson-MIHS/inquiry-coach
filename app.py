@@ -33,7 +33,7 @@ if st.button("Analyze My Work"):
         st.warning("Please paste some text.")
     else:
         # 🚀 UPDATE: Using the Gemini 3 Flash model (March 2026 standard)
-        model_id = "gemini-2.0-flash"
+        model_id = "gemini-1.5-flash-8b"
         url = f"https://generativelanguage.googleapis.com/v1/models/{model_id}:generateContent?key={user_key}"
         
         headers = {'Content-Type': 'application/json'}
