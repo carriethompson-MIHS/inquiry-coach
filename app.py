@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-from google.generativeai.types import RequestOptions
 
 # --- 1. PAGE SETUP ---
 st.set_page_config(page_title="Senior Inquiry Coach", layout="centered")
@@ -34,24 +33,22 @@ if st.button("Analyze My Work"):
         st.warning("Please paste some text.")
     else:
         try:
-            # FORCE FIX: Force 'rest' transport and 'v1' API version
-            genai.configure(api_key=user_key, transport='rest')
+            # FIX: Simple configuration
+            genai.configure(api_key=user_key)
             
-            # Using the absolute most basic model name
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            # THE 2026 FIX: 
+            # We bypass 'v1beta' by using the 'v1' model name directly
+            model = genai.GenerativeModel('models/gemini-1.5-flash')
             
             prompt = f"Act as a teacher. Check this work against: {RUBRIC_DATA}. List 3 strengths and 3 gaps. Do not rewrite it."
             
-            with st.spinner("Forcing connection to Stable V1..."):
-                # This 'request_options' line is the ultimate override for the 404 error
-                response = model.generate_content(
-                    prompt + "\n\nWork: " + draft,
-                    request_options=RequestOptions(api_version='v1')
-                )
+            with st.spinner("Connecting to Gemini..."):
+                # We removed RequestOptions to avoid that 'unexpected keyword' error
+                response = model.generate_content(prompt + "\n\nWork: " + draft)
                 
                 st.success("Analysis Complete!")
                 st.markdown(response.text)
                 
         except Exception as e:
             st.error(f"Technical Error: {e}")
-            st.info("If you still see 404, we will try one last trick with the Model Name.")
+            st.info("If you see a 429 error now, it just means we need to wait 60 seconds for the 'Free Tier' to reset.")
