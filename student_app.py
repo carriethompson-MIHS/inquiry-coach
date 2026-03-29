@@ -86,5 +86,5 @@ if st.button("Analyze My Work"):
 
 # --- FOOTER / VERSIONING ---
 st.divider()
-st.caption("Senior Inquiry Coach | Version 2.1 (Two-Pass Evaluator)")
+st.caption("Senior Inquiry Coach | Version 2.2 (Two-Pass Evaluator)")
 st.caption("Last Updated: March 2026 | Built for MIHS Senior Inquiry")
