@@ -37,17 +37,37 @@ if st.button("Run Full Analysis"):
         model_id = "gemini-2.5-flash"
         url = f"https://generativelanguage.googleapis.com/v1/models/{model_id}:generateContent?key={api_key}"
         
-        # --- THE MASTER RUBRIC ---
+       # --- THE TWO-PASS MASTER PROMPT ---
         rubric = """
-        Act as an expert Senior Inquiry Teacher. Analyze this work against these criteria:
-        1. CLAIM & REASONING (20 pts): Precision of claim and engagement.
-        2. DEPTH OF INQUIRY (20 pts): Evidence of 15+ sources and data balance.
-        3. ORGANIZATION (20 pts): Synthesis language and paragraph flow.
-        4. VOICE (15 pts): Absolute prohibition of first/third person (I, me, my, we, us) and passive voice.
-        5. GRAPHICS (10 pts): Look for mentions/headers for visuals (MLA style).
-        6. CONVENTIONS (15 pts): Sentence construction and MLA formatting.
-        
-        FORMAT: Use bold headers for categories. Provide 'Strengths' and 'Targeted Growth' for each.
+       Analyze the student work in TWO distinct passes:
+
+        PASS 1: BROAD RUBRIC STATUS
+        Provide a concise status report (Meeting, Exceeding, or Below) for:
+        - Claim & Reasoning
+        - Depth of Inquiry
+        - Organization & Structure
+        - Academic Voice
+        - Graphics & Visuals
+        - Conventions
+
+        PASS 2: TARGETED SKILL COACHING (Deep Dive)
+        Provide specific, actionable guidance on these three "Exceeds Expectations" criteria:
+
+        1. ORGANIZATION & FLOW: 
+           - Is the writing organized with a synthesis of data and commentary? 
+           - Are topic sentences and transitions strengthening the flow?
+           - Identify one specific paragraph that needs better "Synthesis Language."
+
+        2. INQUIRY DEPTH & DATA BALANCE:
+           - Does it show evidence of 15+ sources? 
+           - Is there a balance of Qualitative (narrative) and Quantitative (data) evidence?
+           - If unbalanced, suggest what specific *type* of source is missing.
+
+        3. CLAIM & COUNTERCLAIM DEVELOPMENT:
+           - Is the intro presenting info as 'relevant and critical'?
+           - Does it distinguish the claim from opposing views and develop that counterclaim *thoroughly*?
+
+        STRICT RULE: Do not rewrite the student's work. Use Socratic questioning to push them toward the 'Exceeds' category.
         """
 
         prompt = f"{rubric}\n\nPHASE: {mode}\n\nWORK TO ANALYZE:\n{draft}"
