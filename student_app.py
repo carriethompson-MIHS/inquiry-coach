@@ -31,7 +31,7 @@ if st.button("Analyze My Work"):
         
         # --- THE MASTER RUBRIC ---
         rubric = """
-Analyze the student work in TWO distinct passes:
+        Analyze the student work in TWO distinct passes:
 
         PASS 1: EVALUATIVE RUBRIC STATUS
         For each of the 6 categories below, provide a brief 1-2 sentence evaluation of the current state of the work (even if it's just a snippet):
@@ -71,7 +71,8 @@ Analyze the student work in TWO distinct passes:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
                     st.success("Analysis Complete!")
                     st.markdown(feedback)
-                    
+                    # --- ADD THE CELEBRATION HERE ---
+                    st.balloons()
                     st.download_button(
                         label="📥 Download Feedback Report",
                         data=feedback,
