@@ -33,8 +33,8 @@ if st.button("Analyze My Work"):
         rubric = """
 Analyze the student work in TWO distinct passes:
 
-        PASS 1: BROAD RUBRIC STATUS
-        Provide a concise status report (Meeting, Exceeding, or Below) for:
+        PASS 1: EVALUATIVE RUBRIC STATUS
+        For each of the 6 categories below, provide a brief 1-2 sentence evaluation of the current state of the work (even if it's just a snippet):
         - Claim & Reasoning
         - Depth of Inquiry
         - Organization & Structure
@@ -48,12 +48,11 @@ Analyze the student work in TWO distinct passes:
         1. ORGANIZATION & FLOW: 
            - Is the writing organized with a synthesis of data and commentary? 
            - Are topic sentences and transitions strengthening the flow?
-           - Identify one specific paragraph that needs better "Synthesis Language."
+           - Identify one specific spot that needs better "Synthesis Language."
 
         2. INQUIRY DEPTH & DATA BALANCE:
-           - Does it show evidence of 15+ sources? 
-           - Is there a balance of Qualitative (narrative) and Quantitative (data) evidence?
-           - If unbalanced, suggest what specific *type* of source is missing.
+           - Check for evidence of 15+ sources and a balance of Qualitative vs. Quantitative data.
+           - Suggest what specific *type* of source or data is missing from this section.
 
         3. CLAIM & COUNTERCLAIM DEVELOPMENT:
            - Is the intro presenting info as 'relevant and critical'?
