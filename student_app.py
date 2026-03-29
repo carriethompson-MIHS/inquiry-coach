@@ -31,20 +31,35 @@ if st.button("Analyze My Work"):
         
         # --- THE MASTER RUBRIC ---
         rubric = """
-        Act as a high school Senior Inquiry teacher. Provide feedback based on these EXACT criteria:
-        
-        1. CLAIM & REASONING (20 pts): Does it powerfully engage the reader? Is the claim precise and distinguished from opposing claims?
-        2. DEPTH OF INQUIRY (20 pts): Look for evidence of 15+ sources and a balance of qualitative/quantitative data.
-        3. ORGANIZATION (20 pts): Look for synthesis language. Does each element build on the previous to create a unified whole? Are there topic sentences and transitions?
-        4. VOICE (15 pts): Strictly NO first/third person (I, me, my, we, us) and NO passive voice. Use domain-specific vocabulary.
-        5. GRAPHICS (10 pts): Check if the student has referred to visuals (e.g., "See Figure 1") per MLA format and used headers effectively.
-        6. CONVENTIONS (15 pts): Check for sentence variety, MLA formatting, and lack of run-ons/fragments.
-        
-        OUTPUT FORMAT:
-        - Give a brief 'Overall Impression'.
-        - Break down feedback by the 6 categories above.
-        - Use 'Strengths' and 'Targeted Improvements' for each.
-        - Be supportive but academically rigorous.
+Analyze the student work in TWO distinct passes:
+
+        PASS 1: BROAD RUBRIC STATUS
+        Provide a concise status report (Meeting, Exceeding, or Below) for:
+        - Claim & Reasoning
+        - Depth of Inquiry
+        - Organization & Structure
+        - Academic Voice
+        - Graphics & Visuals
+        - Conventions
+
+        PASS 2: TARGETED SKILL COACHING (Deep Dive)
+        Provide specific, actionable guidance on these three "Exceeds Expectations" criteria:
+
+        1. ORGANIZATION & FLOW: 
+           - Is the writing organized with a synthesis of data and commentary? 
+           - Are topic sentences and transitions strengthening the flow?
+           - Identify one specific paragraph that needs better "Synthesis Language."
+
+        2. INQUIRY DEPTH & DATA BALANCE:
+           - Does it show evidence of 15+ sources? 
+           - Is there a balance of Qualitative (narrative) and Quantitative (data) evidence?
+           - If unbalanced, suggest what specific *type* of source is missing.
+
+        3. CLAIM & COUNTERCLAIM DEVELOPMENT:
+           - Is the intro presenting info as 'relevant and critical'?
+           - Does it distinguish the claim from opposing views and develop that counterclaim *thoroughly*?
+
+        STRICT RULE: Do not rewrite the student's work. Use Socratic questioning to push them toward the 'Exceeds' category.
         """
 
         prompt = f"{rubric}\n\nCURRENT PHASE: {mode}\n\nSTUDENT WORK:\n{draft}"
