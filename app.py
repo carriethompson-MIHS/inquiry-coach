@@ -79,7 +79,8 @@ if st.button("Run Full Analysis"):
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
                     st.success("Analysis Complete!")
                     st.markdown(feedback)
-                    
+                    # --- ADD THE CELEBRATION HERE ---
+                    st.balloons()
                     st.download_button(
                         label="📥 Download Teacher Copy",
                         data=feedback,
