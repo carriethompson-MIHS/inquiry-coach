@@ -82,3 +82,8 @@ Analyze the student work in TWO distinct passes:
                     st.error("The coach is busy. Wait 60 seconds and try again!")
             except Exception as e:
                 st.error(f"Error: {e}")
+
+# --- FOOTER / VERSIONING ---
+st.divider()
+st.caption("Senior Inquiry Coach | Version 2.1 (Two-Pass Evaluator)")
+st.caption("Last Updated: March 2026 | Built for MIHS Senior Inquiry")
