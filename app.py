@@ -90,3 +90,8 @@ if st.button("Run Full Analysis"):
                     st.error(f"Google error: {response.json()['error']['message']}")
             except Exception as e:
                 st.error(f"Error: {e}")
+
+# --- FOOTER / VERSIONING ---
+st.divider()
+st.caption("Senior Inquiry Coach | Version 2.1 (Two-Pass Evaluator)")
+st.caption("Last Updated: March 2026 | Built for MIHS Senior Inquiry")
