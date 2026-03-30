@@ -72,20 +72,16 @@ if st.button("Run Full Analysis"):
         prompt = f"{rubric}\n\nPHASE: {mode}\n\nWORK TO ANALYZE:\n{draft}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-        with st.spinner("Analyzing against the 100-point rubric..."):
+        with st.spinner("Applying the Master Rubric..."):
             try:
-                response = requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(data))
-               if response.status_code == 200:
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+                
+                if response.status_code == 200:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
-                    
-                    st.success("Analysis Complete!")
-                    st.balloons() 
-                    
-                    st.markdown(feedback)
-                     # --- ADD THE CELEBRATION HERE ---
+                    st.success("Analysis Complete!")           
                     st.balloons()
-                   
-                    # Add a little reminder above the button
+                    st.markdown(feedback)
+                    
                     st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
                     
                     st.download_button(
@@ -94,12 +90,11 @@ if st.button("Run Full Analysis"):
                         file_name="Senior_Inquiry_Feedback_V2.4.txt",
                         mime="text/plain"
                     )
-                  
-            else:
-                    st.error(f"Google error: {response.json()['error']['message']}")
+                else:
+                    st.error("The coach is busy. Wait 60 seconds and try again!")
+                        
             except Exception as e:
                 st.error(f"Error: {e}")
-
 # --- FOOTER / VERSIONING ---
 st.divider()
 st.caption("Senior Inquiry Coach | Version 2.4 (Two-Pass Evaluator)")
