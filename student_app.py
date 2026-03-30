@@ -64,20 +64,17 @@ if st.button("Analyze My Work"):
         prompt = f"{rubric}\n\nCURRENT PHASE: {mode}\n\nSTUDENT WORK:\n{draft}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-         with st.spinner("Applying the Master Rubric..."):
+       with st.spinner("Applying the Master Rubric..."):
             try:
                 response = requests.post(url, headers=headers, data=json.dumps(data))
-                         
+                
                 if response.status_code == 200:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
-
-                    st.success("Analysis Complete!")
-                   
+                    st.success("Analysis Complete!")           
+                    st.balloons()
                     st.markdown(feedback)
-                      # --- ADD THE CELEBRATION HERE ---
-                    st.balloons()  )
-                    # Add a little reminder above the button
-                    st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
+                    
+                    st.info("💡 **Required:** Download this report and upload it to your Google Doc for credit.")
                     
                     st.download_button(
                         label="📥 Download Feedback Report (Ver 2.4)",
@@ -85,12 +82,12 @@ if st.button("Analyze My Work"):
                         file_name="Senior_Inquiry_Feedback_V2.4.txt",
                         mime="text/plain"
                     )
-                    else:
+                else:
                     st.error("The coach is busy. Wait 60 seconds and try again!")
+                        
             except Exception as e:
                 st.error(f"Error: {e}")
-
 # --- FOOTER / VERSIONING ---
 st.divider()
-st.caption("Senior Inquiry Coach | Version 2.2 (Two-Pass Evaluator)")
+st.caption("Senior Inquiry Coach | Version 2.4 (Two-Pass Evaluator)")
 st.caption("Last Updated: March 2026 | Built for MIHS Senior Inquiry")
