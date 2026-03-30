@@ -75,19 +75,27 @@ if st.button("Run Full Analysis"):
         with st.spinner("Analyzing against the 100-point rubric..."):
             try:
                 response = requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(data))
-                if response.status_code == 200:
+               if response.status_code == 200:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
+                    
                     st.success("Analysis Complete!")
+                    st.balloons() 
+                    
                     st.markdown(feedback)
-                    # --- ADD THE CELEBRATION HERE ---
+                     # --- ADD THE CELEBRATION HERE ---
                     st.balloons()
+                   
+                    # Add a little reminder above the button
+                    st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
+                    
                     st.download_button(
-                        label="📥 Download Teacher Copy",
+                        label="📥 Download Feedback Report (Ver 2.4)",
                         data=feedback,
-                        file_name="Teacher_Admin_Feedback.txt",
+                        file_name="Senior_Inquiry_Feedback_V2.4.txt",
                         mime="text/plain"
                     )
-                else:
+                  
+            else:
                     st.error(f"Google error: {response.json()['error']['message']}")
             except Exception as e:
                 st.error(f"Error: {e}")
