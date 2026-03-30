@@ -66,20 +66,25 @@ if st.button("Analyze My Work"):
 
         with st.spinner("Applying the Master Rubric..."):
             try:
-                response = requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(data))
-                if response.status_code == 200:
+           if response.status_code == 200:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
+                    
                     st.success("Analysis Complete!")
+                    st.balloons() 
+                    
                     st.markdown(feedback)
-                    # --- ADD THE CELEBRATION HERE ---
-                    st.balloons()
+                      # --- ADD THE CELEBRATION HERE ---
+                    st.balloons()  )
+                    # Add a little reminder above the button
+                    st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
+                    
                     st.download_button(
-                        label="📥 Download Feedback Report",
+                        label="📥 Download Feedback Report (Ver 2.4)",
                         data=feedback,
-                        file_name="Senior_Inquiry_Feedback.txt",
+                        file_name="Senior_Inquiry_Feedback_V2.4.txt",
                         mime="text/plain"
                     )
-                else:
+            else:
                     st.error("The coach is busy. Wait 60 seconds and try again!")
             except Exception as e:
                 st.error(f"Error: {e}")
