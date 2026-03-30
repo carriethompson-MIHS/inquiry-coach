@@ -66,6 +66,9 @@ if st.button("Analyze My Work"):
         
         with st.spinner("Applying the Master Rubric..."):
             try:
+                # --- DEFINE HEADERS HERE ---
+                headers = {"Content-Type": "application/json"}
+                
                 response = requests.post(url, headers=headers, data=json.dumps(data))
                 
                 if response.status_code == 200:
@@ -74,7 +77,7 @@ if st.button("Analyze My Work"):
                     st.balloons()
                     st.markdown(feedback)
                     
-                    st.info("💡 **Required:** Download this report and upload it to your Google Doc for credit.")
+                    st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
                     
                     st.download_button(
                         label="📥 Download Feedback Report (Ver 2.4)",
