@@ -77,7 +77,7 @@ if st.button("Analyze My Work"):
                     st.balloons()
                     st.markdown(feedback)
                     
-                    st.info("💡 **Required:** Download this report and upload it to your Google Doc/LMS for credit.")
+                    st.info("💡 **Required:** Download this report and upload it to your Google Doc for credit.")
                     
                     st.download_button(
                         label="📥 Download Feedback Report (Ver 2.4)",
