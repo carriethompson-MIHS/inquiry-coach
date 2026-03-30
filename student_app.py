@@ -64,11 +64,13 @@ if st.button("Analyze My Work"):
         prompt = f"{rubric}\n\nCURRENT PHASE: {mode}\n\nSTUDENT WORK:\n{draft}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
 
-        with st.spinner("Applying the Master Rubric..."):
+         with st.spinner("Applying the Master Rubric..."):
             try:
-           if response.status_code == 200:
+                response = requests.post(url, headers=headers, data=json.dumps(data))
+                         
+                if response.status_code == 200:
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
-                    
+
                     st.success("Analysis Complete!")
                    
                     st.markdown(feedback)
@@ -83,7 +85,7 @@ if st.button("Analyze My Work"):
                         file_name="Senior_Inquiry_Feedback_V2.4.txt",
                         mime="text/plain"
                     )
-            else:
+                    else:
                     st.error("The coach is busy. Wait 60 seconds and try again!")
             except Exception as e:
                 st.error(f"Error: {e}")
