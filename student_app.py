@@ -70,8 +70,7 @@ if st.button("Analyze My Work"):
                     feedback = response.json()['candidates'][0]['content']['parts'][0]['text']
                     
                     st.success("Analysis Complete!")
-                    st.balloons() 
-                    
+                   
                     st.markdown(feedback)
                       # --- ADD THE CELEBRATION HERE ---
                     st.balloons()  )
