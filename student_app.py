@@ -63,8 +63,8 @@ if st.button("Analyze My Work"):
 
         prompt = f"{rubric}\n\nCURRENT PHASE: {mode}\n\nSTUDENT WORK:\n{draft}"
         data = {"contents": [{"parts": [{"text": prompt}]}]}
-
-       with st.spinner("Applying the Master Rubric..."):
+        
+        with st.spinner("Applying the Master Rubric..."):
             try:
                 response = requests.post(url, headers=headers, data=json.dumps(data))
                 
