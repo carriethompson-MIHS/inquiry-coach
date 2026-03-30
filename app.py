@@ -102,5 +102,5 @@ if st.button("Run Full Analysis"):
 
 # --- FOOTER / VERSIONING ---
 st.divider()
-st.caption("Senior Inquiry Coach | Version 2.2 (Two-Pass Evaluator)")
+st.caption("Senior Inquiry Coach | Version 2.4 (Two-Pass Evaluator)")
 st.caption("Last Updated: March 2026 | Built for MIHS Senior Inquiry")
